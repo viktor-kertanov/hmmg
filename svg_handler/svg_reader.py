@@ -1,5 +1,7 @@
 from bs4 import BeautifulSoup
 from lxml import etree
+from glob import glob
+import os
 
 def get_preety_numpy_svg(svg_input: str, main_id_new_name: str='1') -> bool:
     '''Numpy outputs svg that has several flaws: bad background patch, bad names of svg lines
@@ -37,8 +39,19 @@ def get_preety_numpy_svg(svg_input: str, main_id_new_name: str='1') -> bool:
     
     return True
 
+def get_vpype_dir_files(dir_path: str):
+    filepattern = '*.svg'
+    files = glob(os.path.join(dir_path, filepattern))
+
+    return files
 
 if __name__ == '__main__':
-    svg_input = 'svg_handler/circles.svg'
-    get_preety_numpy_svg(svg_input, '1-circles')
+    svg_input_folder = 'vpype/input/'
+    files = get_vpype_dir_files(svg_input_folder)
+
+    for file in files:
+        layer_name = file.split('/')[-1].replace('.svg', '')
+        get_preety_numpy_svg(file, layer_name)
+
+    
     print('Hello world!')

@@ -1,4 +1,5 @@
 import numpy as np
+from typing import Union
 
 def get_circle_thetas(input_quarter: int, num_points_per_q=100) -> np.ndarray:
     '''Function that exclude a quarter from a circle points. 
@@ -35,23 +36,23 @@ def define_circle_quarter(angle_rad: float) -> int:
     else:
         raise ValueError(f'{angle_rad} return unexpected result. Fraction = {fraction}')
 
+def get_opposit_quarter(input_angle_rad: float):
+    '''Getting the opposite quarter'''
+    input_q = define_circle_quarter(input_angle_rad)
+    opposition = {1: 3, 2: 4, 3: 1, 4: 2}
+    
+    return opposition[input_q]
+
 def random_walk_builder(
         num_vectors,
         vector_len,
         vector_len_mu,
-        cur_coord = (0,0),
         max_x = 100,
         max_y = 100
     ):
     
-    pi_quaters = np.pi/4
+    cur_coord = (0,0)
 
-    if not cur_coord:
-        cur_coord = (
-            np.random.randint(0, max_x),
-            np.random.randint(0, max_y)
-        )
-    
     result_coords = [cur_coord]
 
     for vector_idx in range(num_vectors):
@@ -65,6 +66,7 @@ def random_walk_builder(
 
         # even vector_idx scenario
         if vector_idx % 2 ==0:
+
             if level_x <= 0.5:
                 left_right = np.random.randn()*np.pi*mu_scale_x
             else:
@@ -78,23 +80,27 @@ def random_walk_builder(
             theta = np.random.choice([left_right, top_bottom, (top_bottom+left_right)/2])
 
         else:
-            # odd_vector_idx scenario            
-            if theta>= 0 and theta <= np.pi/2:
-                thetas_space = np.concatenate((np.linspace(np.pi/2, np.pi, 300), np.linspace(3*np.pi/2, 2*np.pi, 300)))
-            elif theta <= np.pi:
-                thetas_space = np.concatenate((np.linspace(0, np.pi/2, 300), np.linspace(np.pi, 3*np.pi/2, 300)))
-            elif theta <= 3*np.pi/2:
-                thetas_space = np.concatenate((np.linspace(np.pi/2, 3*np.pi/2, 300), np.linspace(3*np.pi/2, 2*np.pi, 300)))
-            else:
-                thetas_space = np.concatenate((np.linspace(0, np.pi/2), np.linspace(np.pi, 3*np.pi/2)))
-            
-            theta = np.random.choice(thetas_space)
+            # odd_vector_idx scenario      
+            input_quarter = define_circle_quarter(theta)      
+            thetas = get_circle_thetas(input_quarter)  
+            theta = np.random.choice(thetas)
         
-        cur_coord = cur_coord[0]+np.cos(theta)*vector_len*(1+np.random.rand()), cur_coord[1]+np.sin(theta)*vector_len*(1+np.random.rand())
+        cur_coord = (
+            cur_coord[0]+np.cos(theta)*vector_len*(1+np.random.rand()*vector_len_mu),
+            cur_coord[1]+np.sin(theta)*vector_len*(1+np.random.rand()*vector_len_mu)
+        )
         result_coords.append(cur_coord)
     
     return result_coords
 
+def get_vector_chain_from_points(coordinate_chain: list[tuple]):
+    vector_chain = []
+    
+    for idx, coordinate in enumerate(coordinate_chain[1:], start=1):
+        vector_chain.append((coordinate_chain[idx-1], coordinate))
+    
+    return vector_chain
+        
+
 if __name__ == '__main__':
-    a = get_circle_points(1)
     print('Hello world!')
