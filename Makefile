@@ -10,7 +10,7 @@ vpype_multi: svg_optimize
     write vpype/output/output.svg
 
 vpype_fab: vpype_multi
-	vpype read vpype/output/output.svg penwidth 1mm layout -m 0.5cm -l -h center -v center 7x5in write vpype/output/final_for_axi.svg
+	vpype read vpype/output/output.svg layout -m 0.5cm -l -h center -v center 7x5in write vpype/output/final_for_axi.svg
 
 vpype_a5_2:
 	vpype read input.svg rotate -- -1 trim 0.3in 0.3in penwidth 0.05mm layout -m 1cm -l -h center -v center 8.3x5.8in write output.svg
