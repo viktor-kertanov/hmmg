@@ -1,7 +1,7 @@
+import numpy as np
 import matplotlib.pyplot as plt
 
-x = [1, 2, 3, 4, 5]
-y = [1, 4, 9, 16, 25]
-
-plt.plot(x, y)
-plt.show()
+class Square:
+    def __init__(self, init_coordinate: tuple[int], side_len: int):
+        A = [init_coordinate[0], init_coordinate[1]]
+        B = [A[0], ]
