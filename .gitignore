@@ -149,3 +149,5 @@ config.py
 *.svg
 
 notebooks/colorful_vectors/output/
+
+AxiDraw_API_381/
