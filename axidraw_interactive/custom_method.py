@@ -16,10 +16,6 @@ class CustomAxiDraw(AxiDraw):
             logger.error("Use plot_setup(svg_input) before plot_run().")
             raise RuntimeError("No SVG input provided.")
         
-        # Set up a timer to trigger the pause after 10 minutes (600 seconds)
-        pause_timer = threading.Timer(sleep_timer_sec, self.software_initiated_pause_event.set)
-        pause_timer.start()
-        
         self.set_defaults() # Re-initialize some items normally set at __init__
         self.set_up_pause_receiver(self.software_initiated_pause_event)
         self.effect()
@@ -31,6 +27,10 @@ class CustomAxiDraw(AxiDraw):
 
         if self.options.mode in ("plot", "layers", "res_plot"):
             ''' Timing & distance variables only available in modes that plot '''
+            # Set up a timer to trigger the pause after 10 minutes (600 seconds)
+            pause_timer = threading.Timer(sleep_timer_sec, self.software_initiated_pause_event.set)
+            pause_timer.start()
+            logger.info('Currently after pause timer in plot or res_plot or layers mode.')
             if self.options.preview:
                 self.time_estimate = self.plot_status.stats.pt_estimate / 1000.0
             else:
