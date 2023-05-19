@@ -16,7 +16,10 @@ vpype_fab_big: vpype_multi
 	vpype read vpype/output/output.svg layout -m 1cm -l -h center -v center 8.25x6in write vpype/output/final_for_axi.svg
 
 vpype_fab_extra: vpype_multi
-	vpype read vpype/output/output.svg layout -m 2cm -l -h center -v center 12x9in write vpype/output/final_for_axi.svg
+	vpype read vpype/output/output.svg layout -m 1cm -l -h center -v center 12x9in write vpype/output/final_for_axi.svg
+
+vpype_sqr: vpype_multi
+	vpype read vpype/output/output.svg layout -m 1cm -l -h center -v center 20x20cm write vpype/output/final_for_axi.svg
 
 vpype_canson: vpype_multi
 	vpype read vpype/output/output.svg layout -m 1cm -l -h center -v center 8.3x5.8in write vpype/output/final_for_axi.svg
@@ -45,3 +48,6 @@ dedup:
 
 vpype_layer:
 	vpype read full.svg forlayer write output_%_name%.svg end
+
+motor_down:
+	axicli -m manual -M disable_xy
