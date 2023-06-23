@@ -1,5 +1,5 @@
 svg_optimize:
-	python3 -m svg_handler.svg_reader
+	python3 -m svg_handler.svg_subplot
 	sleep 5
 
 vpype_multi: svg_optimize
